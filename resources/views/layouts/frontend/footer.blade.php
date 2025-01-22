@@ -8,7 +8,7 @@
                         <li class="pt-2">Home</li>
                     </a>
                     @foreach($main_categories as $main)
-                    <a href="{{route('frontend.product.product_list', [Str::slug($main->name)])}}" class="text-decoration-none text-white">
+                    <a href="{{route('frontend.product.product_list', [Str::slug($main->slug)])}}" class="text-decoration-none text-white">
                         <li class="pt-2">{{$main->name}}</li>
                     </a>
                     @endforeach

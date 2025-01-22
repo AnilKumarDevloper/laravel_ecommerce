@@ -15,7 +15,7 @@ class PaymentController extends Controller{
     public function getAddressDetail(){
         $shipping_address = ShippingAddress::where('user_id', Auth::user()->id)->first();
         $billing_address = BillingAddress::where('user_id', Auth::user()->id)->first();
-        $cart_item = Cart::with(['getProduct:id,product_name','getStock'])
+        $cart_item = Cart::with(['getProduct:id,product_name,tax_name,tax_rate','getStock'])
         ->whereHas('getStock', function ($query) {
             $query->whereNull('deleted_at');
         })

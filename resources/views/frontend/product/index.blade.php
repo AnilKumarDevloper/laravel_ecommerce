@@ -20,7 +20,8 @@
                 <nav aria-label="breadcrumb" style="margin: 0 auto;">
                     <ol class="breadcrumb d-flex justify-content-center">
                         <li class="breadcrumb-item"><a href="#" class="text-white">Home</a></li>
-                        <li class="breadcrumb-item active pt-1" aria-current="page" style="color: #01b7e0; font-size: 14px;">Categories</li>
+                        <li class="breadcrumb-item active pt-1" aria-current="page" style="color: #01b7e0; font-size: 14px;">{{$main_category_name}}</li>
+                        <li class="breadcrumb-item active pt-1" aria-current="page" style="color: #01b7e0; font-size: 14px;">{{$sub_cat_name}}</li>
                     </ol>
                 </nav>
             </div>
@@ -54,7 +55,7 @@
                             <i class="fa-solid fa-caret-down mx-2"></i> 
                                 <ul>
                                 @foreach($main->subCategory as $sub)
-                                    <li class="mt-2 mb-2"><a href="{{route('frontend.product.product_list', [Str::slug($main->name), Str::slug($sub->name)])}}" class="text-decoration-none text-dark">{{$sub->name}}</a> </li> 
+                                    <li class="mt-2 mb-2"><a href="{{route('frontend.product.product_list', [Str::slug($main->slug), Str::slug($sub->slug)])}}" class="text-decoration-none text-dark">{{$sub->name}}</a> </li> 
                                     @endforeach
                                 </ul>
                                 @endif
@@ -89,11 +90,12 @@
                 <div class="row">
                     
                     <input type="hidden" value="{{$page_url}}" id="page_url">
+
                     @foreach($product_list as $product)
                     <div class="col-md-3 all laptop" class="content" id="{{$product->slug}}">
                         <div class="card ">
                             <div class="cart_img_wrap mt-2">
-                                <a href="single-product.html"><img
+                                <a href="{{route('frontend.product.single_product', [$product->slug])}}"><img
                                         src="{{$product->product_images == '' ? url('public/assets/both/placeholder/product.jpg') : url('public/'.$product->product_images[0])}}"></a>
                             </div>
                             <div class="card-body">
@@ -113,6 +115,7 @@
                         </div>
                     </div>
                     @endforeach 
+                    
                 </div>
                 <div class="col-md-12" class="my_pagination">
                     {{$product_list->links('pagination::bootstrap-5')}}

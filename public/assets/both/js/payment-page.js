@@ -8,11 +8,15 @@ async function paymentPage(){
     let sub_total = 0;
     let final_amount_total = 0; 
     let paymentData = await fetch(baseUrl+"/get-address-payment-detail");
-    let response = await paymentData.json()
-
+    let response = await paymentData.json() 
     let paymentMethods = await fetch(baseUrl+"/api/payment-methods");
     let paymentMethodResponse = await paymentMethods.json();
     let appendToPaymentMethod = '';
+    let cgst = window.localStorage.getItem('CGST');
+    let sgst = window.localStorage.getItem('SGST');
+    let igst = window.localStorage.getItem('IGST');
+    let tax = window.localStorage.getItem('TAX');
+     
     paymentMethodResponse.data.forEach(function (item){
         appendToPaymentMethod += `<div class="form-check">
         <input type="radio" class="form-check-input paymentMethod" id="" name="paymentMethod" value="${item.id}"  required>
@@ -40,39 +44,62 @@ async function paymentPage(){
             </td>
         </tr>          
     </tbody>`; 
-    $("#payment_method_table").html(address_table);
-    response.cart_data.forEach(function (item){
+    $("#payment_method_table").html(address_table); 
+    console.log("cart" + response.cart_data);
+    response.cart_data.forEach(function (item){ 
         let month_price = "price_"+item['month']; 
           sub_total = sub_total + (item['get_stock'][month_price]*item['quantity']);
-    }); 
-
+        
+    });  
+    // sub_total=parseInt(window.localStorage.getItem("tax")) + Number(response.shipping_charge)
+ 
     let amount_detail = `<div class="final-order-details">
     <div class="single-order-final">
         <p><b>Sub Total:</b></p>
         <p><b>${formatter.format(sub_total)}</b></p>
     </div>
-</div>
+    </div>
  
-<div class="final-order-details">
+    <div class="final-order-details">
     <div class="single-order-final">
         <p><b>Shipping Charge :</b></p>
         <p><b>${formatter.format(response.shipping_charge)}</b></p>
     </div>
-</div>
-<div class="final-order-details">
-    <div class="single-order-final">
-        <p><b>Coupon discount :</b></p>
-        <p><b>${formatter.format(0)}</b></p>
     </div>
-</div>
-<div class="final-order-details total-final">
+ <div class="final-order-details">
+    <div class="single-order-final">
+        <p><b>CGST :</b></p>
+        <p><b>${formatter.format(cgst)}</b></p>
+        <input type="hidden" value="${cgst}" name="cgst">
+    </div>
+    </div>
+
+    <div class="final-order-details">
+    <div class="single-order-final">
+        <p><b>SGST :</b></p>
+        <p><b>${formatter.format(sgst)}</b></p>
+        <input type="hidden" value="${sgst}" name="sgst">
+    </div>
+    </div>
+     <div class="final-order-details">
+    <div class="single-order-final">
+        <p><b>IGST :</b></p>
+        <p><b>${formatter.format(igst)}</b></p>
+        <input type="hidden" value="${igst}" name="igst">
+    </div>
+    </div>
+
+     
+
+
+    <div class="final-order-details total-final">
     <div class="single-order-final text-danger">
         <p><b>Total :</b></p>
-        <p><b>${formatter.format(sub_total + parseInt(response.shipping_charge))}</b></p>
+        <p><b>${formatter.format(sub_total + parseInt(response.shipping_charge) + parseInt(sgst) + parseInt(igst) + parseInt(cgst))}</b></p>
     </div> 
-</div> 
-<div class="text-end mt-2"><button type="submit" class="btn btn-success" id="submit_order_detail">Place Order</button></div>`;
-$("#payble_amount_detail").html(amount_detail);
-}
-await paymentPage(); 
+    </div> 
+    <div class="text-end mt-2"><button type="submit" class="btn btn-success" id="submit_order_detail">Place Order</button></div>`;
+    $("#payble_amount_detail").html(amount_detail);
+    }
+    await paymentPage(); 
 });

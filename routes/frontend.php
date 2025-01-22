@@ -56,12 +56,13 @@ Route::get('/check-stock', [ProductController::class, 'checkStock'])->name('chec
 Route::get('/remove-from-cart', [ProductController::class, 'removeFromCart'])->name('remove_from_cart');
  // -------------------------add to cart page (end) --------------------------------------------------------------
 
-
 Route::middleware(['auth', 'verified', 'customer_otp_verification'])->group(function () {
 // -------------------------After Both User and Admin login (start) --------------------------------------------------------------
-    // ------------------------ Checkout page route (end) ---------------------------------------------------------------------
+   
+// ------------------------ Checkout page route (end) ---------------------------------------------------------------------
        Route::get('/checkout', [CheckoutController::class, 'checkoutPageView'])->name('frontend.checkout.view');
        Route::get('/checkout-product-list', [ProductController::class, 'productToCheckout'])->name('frontend.checkout.product_list');
+       Route::get('/get-tax-list', [ProductController::class, 'getTaxList'])->name('frontend.checkout.get_tax_list');
 
        Route::post('/payment-method', [CheckoutController::class, 'submitCheckoutAddress'])->name('submit_checkout_address');
        Route::get('/payment-method', [CheckoutController::class, 'redirectOnCart'])->name('redirect_on_cart');

@@ -97,18 +97,16 @@
                             <ul class="navbar-nav" id="header-ul">
                                 <li class="nav-item">
                                     <a class="nav-link" aria-current="page" href="/">Home</a>
-                                </li>
-
-                                @foreach($main_categories as $main)
- 
+                                </li> 
+                                @foreach($main_categories as $main) 
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link {{count($main->subCategory) > 0 ? 'dropdown-toggle' : ''}}" href="{{route('frontend.product.product_list', [Str::slug($main->name)])}}" role="button" aria-expanded="false">
+                                    <a class="nav-link {{count($main->subCategory) > 0 ? 'dropdown-toggle' : ''}}" href="{{route('frontend.product.product_list', [Str::slug($main->slug)])}}" role="button" aria-expanded="false">
                                         {{$main->name}}
                                     </a>
                                     @if(count($main->subCategory) > 0)
                                         <ul class="dropdown-menu">
                                             @foreach($main->subCategory as $sub)
-                                            <li><a class="dropdown-item" href="{{route('frontend.product.product_list', [Str::slug($main->name), Str::slug($sub->name)])}}">{{$sub->name}}</a></li>
+                                            <li><a class="dropdown-item" href="{{route('frontend.product.product_list', [Str::slug($main->slug), Str::slug($sub->slug)])}}">{{$sub->name}}</a></li>
                                             @endforeach
                                         </ul>
                                     @endif
@@ -155,6 +153,9 @@
                                 @endif
                                 <li><a class="dropdown-item fw-bold" href="{{route('frontend.user.dashboar.view')}}"
                                         style=" color: #01316b;">Dashboard</a></li>
+                                <li> 
+                                <li><a class="dropdown-item fw-bold" href="{{route('frontend.user.manage_profile.view')}}"
+                                        style=" color: #01316b;">Profile</a></li>
                                 <li> 
                                     <form action="{{route('logout')}}" method="POST">
                                         @csrf

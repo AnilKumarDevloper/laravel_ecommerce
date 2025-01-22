@@ -226,28 +226,44 @@
                                 completed
                                 @endif ">
                                     <span class="is-complete"></span>
-                                    <p>Ordered<br><span>Mon, June 24</span></p>
+                                    <p>Ordered<br><span>
+                                    @if($order->ordered_date != "")
+                                        {{Carbon\Carbon::parse($order->ordered_date)->format('d M, Y')}}
+                                        @endif
+                                </span></p>
                                 </div>
                                 <div class="order-tracking 
                                 @if($order->order_status=='accepted' || $order->order_status == 'shipped' || $order->order_status == 'delivered')
                                 completed
                                 @endif ">
                                     <span class="is-complete"></span>
-                                    <p>Accepted<br><span>Mon, June 24</span></p>
+                                    <p>Accepted<br><span>
+                                    @if($order->accepted_date != "")
+                                        {{Carbon\Carbon::parse($order->accepted_date)->format('d M, Y')}}
+                                        @endif
+                                </span></p>
                                 </div>
                                 <div class="order-tracking 
                                 @if($order->order_status == 'shipped' || $order->order_status == 'delivered')
                                 completed
                                 @endif ">
                                     <span class="is-complete"></span>
-                                    <p>Shipped<br><span>Tue, June 25</span></p>
+                                    <p>Shipped<br><span>
+                                        @if($order->shipped_date != "")
+                                        {{Carbon\Carbon::parse($order->shipped_date)->format('d M, Y')}}
+                                        @endif
+                                </span></p>
                                 </div>
                                 <div class="order-tracking
                                 @if($order->order_status == 'delivered')
                                 completed
                                 @endif  ">
                                     <span class="is-complete"></span>
-                                    <p>Delivered<br><span>Fri, June 28</span></p>
+                                    <p>Delivered<br><span>
+                                    @if($order->delivered_date != "")
+                                        {{Carbon\Carbon::parse($order->delivered_date)->format('d M, Y')}}
+                                        @endif
+                                    </span></p>
                                 </div>
                             </div>
                         </div>
@@ -321,10 +337,32 @@
                                 </div>
                                 <div class="final-order-details">
                                     <div class="single-order-final">
+                                        <p> CGST : </p>
+                                        <p> ₹{{number_format($order->cgst, 2)}} </p>
+                                    </div>
+                                </div>
+                                <div class="final-order-details">
+                                    <div class="single-order-final">
+                                        <p> SGST : </p>
+                                        <p> ₹{{number_format($order->sgst, 2)}} </p>
+                                    </div>
+                                </div>
+                                <div class="final-order-details">
+                                    <div class="single-order-final">
+                                        <p> IGST : </p>
+                                        <p> ₹{{number_format($order->igst, 2)}} </p>
+                                    </div>
+                                </div>
+
+                                @if($order->promo_discount != '' && $order->promo_discount > 0)
+                                <div class="final-order-details">
+                                    <div class="single-order-final">
                                         <p> Coupon discount : </p>
                                         <p> ₹{{number_format($order->promo_discount, 2)}} </p>
                                     </div>
                                 </div>
+                                @endif
+                                
                                 <div class="final-order-details total-final">
                                     <div class="single-order-final">
                                         <p> Total : </p>
@@ -340,8 +378,18 @@
         </div>
     </div>
 </section>
+@section('javascript-section')
+    @if(Session::has('new_order'))
+        <script> 
+         window.localStorage.removeItem('SGST');
+         window.localStorage.removeItem('IGST');
+         window.localStorage.removeItem('CGST');
+        </script> 
+    @endif 
+@endsection
 
 
+ 
 
 
 @endsection

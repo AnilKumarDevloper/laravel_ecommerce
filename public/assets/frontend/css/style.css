@@ -33,9 +33,9 @@ body {
   font-size: 8px !important;
 }
 #header-ul li {
-  margin: 0 8px;
+  margin: 0 3px;
   font-size: 13px;
-  position: relative;
+ 
 }
 #header-ul a.nav-link::before {
   content: "";
@@ -48,7 +48,7 @@ body {
   left: 2px;
 }
 #header-ul a.nav-link:hover::before {
-  width: 80%;
+  /* width: 80%; */
   transform: translateX(0);
 }
 #header-ul li a {
